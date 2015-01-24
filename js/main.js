@@ -49,35 +49,24 @@ var errorMessage = function(event) {
                                                    message + '<br><br>';
 };
 
-function initVideoContainer(videoContainer, stream) {
-  var video = document.createElement('video');
-  video.width = 320;
-  video.height = 240;
-  video.autoplay = true;
-  videoContainer.appendChild(video);
-  if (typeof stream.getVideoTracks()[0].label !== 'undefined') {
-    var deviceLabel = document.createElement('p');
-    deviceLabel.innerHTML = stream.getVideoTracks()[0].label;
-    videoContainer.appendChild(deviceLabel);
-  }
-  stream.getVideoTracks()[0].addEventListener('ended', errorMessage);
-  attachMediaStream(video, stream);
-}
-
 window.onload = function() {
   getSources('video').then(function(sources) {
     return Promise.all(sources.map(function(source) {
       return requestVideo(source.id);
     }));
   }).then(function(videos) {
-    var videoContainers = document.querySelectorAll('.video-container');
-    videos.forEach(function(video, index) {
-      var videoContainer = videoContainers[index];
-      if (!videoContainer) {
-        console.error('No video container!');
-        return;
-      }
-      initVideoContainer(videoContainer, video);
+    var stage = document.querySelector('.stage');
+    var v1 = new VideoContainer(videos[0], {
+      pos: 'left'
     });
+    var v1p = new VideoContainer(videos[0], {
+      pos: 'right',
+      mirror: true
+    });
+
+    stage.appendChild(v1.root);
+    stage.appendChild(v1p.root);
+  }).catch(function(error) {
+    console.error(error);
   });
 };
