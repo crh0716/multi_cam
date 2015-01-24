@@ -16,7 +16,7 @@ function getSources(type) {
         });
         resolve(videoSources);
       });
-    };
+    });
   }
 }
 
