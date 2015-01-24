@@ -16,15 +16,15 @@ function getSources(type) {
         });
         resolve(videoSources);
       });
-    }
+    };
   }
 }
 
 function requestVideo(id) {
   return new Promise(function(resolve, reject) {
     getUserMedia({
-      video: { 
-        optional: [ { sourceId: id } ],
+      video: {
+        optional: [{ sourceId: id }],
         mandatory: {
           minWidth: VIDEO_WIDTH,
           minHeight: VIDEO_HEIGHT,
@@ -34,7 +34,7 @@ function requestVideo(id) {
       },
       audio: false
     }, resolve, function(error) {
-      alert("User media request denied with error: " + error.name);
+      alert('User media request denied with error: ' + error.name);
       resolve(null);
     });
   });
@@ -47,7 +47,7 @@ var errorMessage = function(event) {
                 'and try again.';
   document.getElementById('messages').innerHTML += event.target.label + ': ' +
                                                    message + '<br><br>';
-}
+};
 
 function initVideoContainer(videoContainer, stream) {
   var video = document.createElement('video');
@@ -56,9 +56,9 @@ function initVideoContainer(videoContainer, stream) {
   video.autoplay = true;
   videoContainer.appendChild(video);
   if (typeof stream.getVideoTracks()[0].label !== 'undefined') {
-    var deviceLabel = document.createElement('p')
+    var deviceLabel = document.createElement('p');
     deviceLabel.innerHTML = stream.getVideoTracks()[0].label;
-    div.appendChild(deviceLabel);
+    videoContainer.appendChild(deviceLabel);
   }
   stream.getVideoTracks()[0].addEventListener('ended', errorMessage);
   attachMediaStream(video, stream);
@@ -79,7 +79,5 @@ window.onload = function() {
       }
       initVideoContainer(videoContainer, video);
     });
-  }).catch(function(error) {
-    console.error(error);
   });
-}
+};
